@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Invoice</title>
+  <link rel="stylesheet" href="/static/main.css" />
+</head>
+<body class="min-h-screen bg-slate-50 flex flex-col">
+  <main class="flex-1 p-8">
+    <div class="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
+      <h1 class="text-2xl font-bold mb-4" id="invoiceNumberHeader">Edit Invoice</h1>
+
+      <form id="invoiceEditForm" method="POST" action="">
+        <input type="hidden" name="action" value="recalculate" />
+
+        <table class="w-full table-auto mb-4">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 text-left">Employee</th>
+              <th class="px-4 py-2 text-right">Hours</th>
+              <th class="px-4 py-2 text-right">Rate</th>
+              <th class="px-4 py-2 text-right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody id="invoiceItems">
+            <!-- JS will populate this -->
+          </tbody>
+        </table>
+
+        <div class="flex justify-end items-center space-x-4 mb-6">
+          <span class="text-lg font-medium">Total:</span>
+          <span id="totalAmount" class="text-lg font-bold">$0.00</span>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+          <button type="button" onclick="submitInvoice('recalculate')" class="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700">
+            Recalculate
+          </button>
+          <button type="button" onclick="submitInvoice('finalize')" class="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700">
+            Finalize
+          </button>
+          <a href="/invoice" class="px-6 py-3 bg-white border rounded">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const invoiceId = new URLSearchParams(window.location.search).get("id");
+    let invoiceItems = [];
+
+    function loadInvoice() {
+      fetch(`/api/invoice/${invoiceId}`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('invoiceNumberHeader').textContent = "Edit Invoice " + data.invoice_number;
+          const tbody = document.getElementById("invoiceItems");
+          tbody.innerHTML = "";
+
+          invoiceItems = data.items;
+
+          let total = 0;
+          invoiceItems.forEach(item => {
+            const row = document.createElement("tr");
+
+            const emp = document.createElement("td");
+            emp.className = "border px-4 py-2";
+            emp.textContent = item.employee_name;
+
+            const hours = document.createElement("td");
+            hours.className = "border px-4 py-2 text-right";
+            hours.innerHTML = `<input type="number" name="hours_${item.id}" value="${item.hours}" step="0.1" class="w-20 text-right border rounded px-2 py-1">`;
+
+            const rate = document.createElement("td");
+            rate.className = "border px-4 py-2 text-right";
+            rate.innerHTML = `<input type="number" name="rate_${item.id}" value="${item.rate}" step="0.01" class="w-24 text-right border rounded px-2 py-1">`;
+
+            const sub = item.hours * item.rate;
+            total += sub;
+
+            const subtotal = document.createElement("td");
+            subtotal.className = "border px-4 py-2 text-right";
+            subtotal.textContent = `$${sub.toFixed(2)}`;
+
+            row.appendChild(emp);
+            row.appendChild(hours);
+            row.appendChild(rate);
+            row.appendChild(subtotal);
+
+            tbody.appendChild(row);
+          });
+
+          document.getElementById("totalAmount").textContent = "$" + total.toFixed(2);
+        });
+    }
+
+    function submitInvoice(action) {
+      const form = document.getElementById("invoiceEditForm");
+      form.action = `/invoice/${invoiceId}/edit?action=${action}`;
+      form.submit();
+    }
+
+    window.onload = loadInvoice;
+  </script>
+</body>
+</html>

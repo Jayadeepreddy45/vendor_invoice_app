@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Creation - VendorInvoice Pro</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fvendorinvo3864back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.5"></script>
+</head>
+<body class="min-h-screen bg-slate-50">
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+            <!-- Left Section: Logo + Menu Toggle -->
+            <div class="flex items-center space-x-4">
+                <!-- Mobile Menu Toggle -->
+                <button id="sidebarToggle" class="lg:hidden p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                
+                <!-- Company Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary-800 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="hidden sm:block">
+                        <h1 class="text-lg font-bold text-slate-900">VendorInvoice Pro</h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Section: User Profile -->
+            <div class="flex items-center space-x-4">
+                <!-- Notifications -->
+                <button class="p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.07 2.82l3.12 3.12M7.05 5.84l3.12 3.12M4.03 8.86l3.12 3.12M1.01 11.88l3.12 3.12"/>
+                    </svg>
+                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-error-500 rounded-full"></span>
+                </button>
+
+                <!-- User Profile Dropdown -->
+                <div class="relative">
+                    <button id="userMenuToggle" class="flex items-center space-x-3 p-2 rounded-md hover:bg-slate-100 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="User Avatar" class="w-8 h-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="hidden sm:block text-left">
+                            <p class="text-sm font-medium text-slate-900">John Smith</p>
+                            <p class="text-xs text-slate-600">Administrator</p>
+                        </div>
+                        <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-elevated border border-slate-200 py-1 z-50">
+                        <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Profile Settings</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Account</a>
+                        <div class="border-t border-slate-200 my-1"></div>
+                        <a href="login.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0 pt-16 lg:pt-0">
+            <div class="flex flex-col h-full">
+                <!-- Navigation Menu -->
+                <nav class="flex-1 px-4 py-6 space-y-2">
+                    <!-- Dashboard -->
+                    <a href="dashboard_overview.html" class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h2a2 2 0 012 2v0H8v0z"/>
+                        </svg>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+
+                    <!-- Timesheet Entry -->
+                    <a href="timesheet_entry.html" class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="font-medium">Timesheet Entry</span>
+                    </a>
+
+                    <!-- Invoice Creation - Active -->
+                    <a href="invoice_creation.html" class="flex items-center space-x-3 px-3 py-2 rounded-md text-primary-800 bg-primary-50 border-r-2 border-primary-800 font-medium">
+                        <svg class="w-5 h-5 text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>Invoice Creation</span>
+                    </a>
+
+                    <!-- Invoice Management -->
+                    <a href="invoice_management.html" class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        <span class="font-medium">Invoice Management</span>
+                    </a>
+
+                    <!-- Vendor Management -->
+                    <a href="vendor_management.html" class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span class="font-medium">Vendor Management</span>
+                    </a>
+
+                    <!-- Reports -->
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span class="font-medium">Reports</span>
+                    </a>
+
+                    <!-- Settings -->
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="font-medium">Settings</span>
+                    </a>
+                </nav>
+
+                <!-- Sidebar Footer -->
+                <div class="p-4 border-t border-slate-200">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-accent-600 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-900">Need Help?</p>
+                            <p class="text-xs text-slate-600">Contact Support</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay for Mobile -->
+        <div id="sidebarOverlay" class="hidden fixed inset-0 bg-slate-900 bg-opacity-50 z-30 lg:hidden"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-0">
+            <div class="p-4 sm:p-6 lg:p-8">
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900">Invoice Creation</h1>
+                            <p class="text-slate-600 mt-1">Generate invoices from timesheet data with auto-filled line items</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button id="saveDraft" class="btn btn-secondary flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                                </svg>
+                                <span>Save Draft</span>
+                            </button>
+                            <button id="generateInvoice" class="btn btn-primary flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                <span>Generate Invoice</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left Section: Invoice Details -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <!-- Invoice Metadata -->
+                        <div class="bg-white rounded-lg shadow-subtle border border-slate-200 p-6">
+                            <h2 class="text-lg font-semibold text-slate-900 mb-6">Invoice Details</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Vendor Selection -->
+                                <div>
+                                    <label for="vendorSelect" class="block text-sm font-medium text-slate-700 mb-2">Select Vendor *</label>
+                                    <select id="vendorSelect" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" required>
+                                        <option value>Choose a vendor...</option>
+                                        <option value="acme-corp">Acme Corporation</option>
+                                        <option value="tech-solutions">Tech Solutions Inc</option>
+                                        <option value="global-supplies">Global Supplies Ltd</option>
+                                        <option value="office-depot">Office Depot</option>
+                                        <option value="creative-designs">Creative Designs LLC</option>
+                                    </select>
+                                </div>
+
+                                <!-- Month/Period Selection -->
+                                <div>
+                                    <label for="periodSelect" class="block text-sm font-medium text-slate-700 mb-2">Billing Period *</label>
+                                    <input type="month" id="periodSelect" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" required />
+                                </div>
+
+                                <!-- Invoice Number -->
+                                <div>
+                                    <label for="invoiceNumber" class="block text-sm font-medium text-slate-700 mb-2">Invoice Number</label>
+                                    <div class="flex">
+                                        <input type="text" id="invoiceNumber" class="flex-1 px-3 py-2 border border-slate-300 rounded-l-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" readonly />
+                                        <button id="regenerateNumber" class="px-3 py-2 bg-slate-100 border border-l-0 border-slate-300 rounded-r-md hover:bg-slate-200 transition-colors" title="Regenerate Number">
+                                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Due Date -->
+                                <div>
+                                    <label for="dueDate" class="block text-sm font-medium text-slate-700 mb-2">Due Date *</label>
+                                    <input type="date" id="dueDate" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" required />
+                                </div>
+                            </div>
+
+                            <!-- Notes -->
+                            <div class="mt-6">
+                                <label for="invoiceNotes" class="block text-sm font-medium text-slate-700 mb-2">Notes</label>
+                                <textarea id="invoiceNotes" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" placeholder="Additional billing notes or payment terms..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Line Items Section -->
+                        <div class="bg-white rounded-lg shadow-subtle border border-slate-200 overflow-hidden">
+                            <div class="px-6 py-4 border-b border-slate-200">
+                                <div class="flex items-center justify-between">
+                                    <h2 class="text-lg font-semibold text-slate-900">Line Items</h2>
+                                    <div class="flex items-center space-x-3">
+                                        <button id="loadTimesheetData" class="btn btn-secondary flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                            </svg>
+                                            <span>Load Timesheet Data</span>
+                                        </button>
+                                        <button id="addLineItem" class="btn btn-primary flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                            <span>Add Line Item</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full" id="lineItemsTable">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Employee Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Hours Worked</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Hourly Rate</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Subtotal</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lineItemsBody" class="bg-white divide-y divide-slate-200">
+                                        <!-- Line items will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div id="emptyState" class="px-6 py-12 text-center">
+                                <svg class="mx-auto w-12 h-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                <h3 class="text-lg font-medium text-slate-900 mb-2">No line items yet</h3>
+                                <p class="text-slate-600 mb-4">Load timesheet data or add line items manually to get started</p>
+                                <button id="loadTimesheetDataEmpty" class="btn btn-primary">Load Timesheet Data</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Section: Invoice Summary -->
+                    <div class="lg:col-span-4">
+                        <div class="bg-white rounded-lg shadow-subtle border border-slate-200 p-6 sticky top-24">
+                            <h2 class="text-lg font-semibold text-slate-900 mb-6">Invoice Summary</h2>
+                            
+                            <!-- Summary Details -->
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-600">Subtotal</span>
+                                    <span id="subtotalAmount" class="text-sm font-medium text-slate-900">$0.00</span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-600">Tax Rate</span>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="taxRate" class="w-16 px-2 py-1 text-xs border border-slate-300 rounded text-right focus:ring-2 focus:ring-primary-500 focus:border-primary-500" value="8.25" min="0" max="100" step="0.01" />
+                                        <span class="text-sm text-slate-600">%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-600">Tax Amount</span>
+                                    <span id="taxAmount" class="text-sm font-medium text-slate-900">$0.00</span>
+                                </div>
+                                
+                                <div class="border-t border-slate-200 pt-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-lg font-semibold text-slate-900">Total</span>
+                                        <span id="totalAmount" class="text-lg font-bold text-primary-800">$0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Invoice Status -->
+                            <div class="mt-6 pt-6 border-t border-slate-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-sm font-medium text-slate-700">Status</span>
+                                    <span id="invoiceStatus" class="badge badge-warning">Draft</span>
+                                </div>
+                                
+                                <div class="text-xs text-slate-600 space-y-1">
+                                    <div>Created: <span id="createdDate">-</span></div>
+                                    <div>Last Modified: <span id="modifiedDate">-</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Stats -->
+                            <div class="mt-6 pt-6 border-t border-slate-200">
+                                <h3 class="text-sm font-medium text-slate-700 mb-3">Quick Stats</h3>
+                                <div class="space-y-2 text-xs text-slate-600">
+                                    <div class="flex justify-between">
+                                        <span>Total Hours:</span>
+                                        <span id="totalHours" class="font-medium">0.00</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Employees:</span>
+                                        <span id="employeeCount" class="font-medium">0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Avg. Rate:</span>
+                                        <span id="avgRate" class="font-medium">$0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile sidebar toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // User menu toggle
+        const userMenuToggle = document.getElementById('userMenuToggle');
+        const userMenu = document.getElementById('userMenu');
+
+        userMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', () => {
+            userMenu.classList.add('hidden');
+        });
+
+        // Invoice creation functionality
+        const lineItemsBody = document.getElementById('lineItemsBody');
+        const emptyState = document.getElementById('emptyState');
+        const addLineItemBtn = document.getElementById('addLineItem');
+        const loadTimesheetBtn = document.getElementById('loadTimesheetData');
+        const loadTimesheetEmptyBtn = document.getElementById('loadTimesheetDataEmpty');
+        const generateInvoiceBtn = document.getElementById('generateInvoice');
+        const saveDraftBtn = document.getElementById('saveDraft');
+        const regenerateNumberBtn = document.getElementById('regenerateNumber');
+
+        // Mock timesheet data
+        const mockTimesheetData = [
+            { employee: 'John Smith', hours: 40, rate: 75.00 },
+            { employee: 'Jane Doe', hours: 35, rate: 65.00 },
+            { employee: 'Mike Johnson', hours: 42, rate: 70.00 },
+            { employee: 'Sarah Wilson', hours: 38, rate: 80.00 }
+        ];
+
+        // Initialize invoice
+        function initializeInvoice() {
+            generateInvoiceNumber();
+            setDefaultDueDate();
+            setCurrentPeriod();
+            updateTimestamps();
+            showEmptyState();
+        }
+
+        // Generate invoice number
+        function generateInvoiceNumber() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            document.getElementById('invoiceNumber').value = `INV-${year}-${month}-${random}`;
+        }
+
+        // Set default due date (30 days from now)
+        function setDefaultDueDate() {
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 30);
+            document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+        }
+
+        // Set current period
+        function setCurrentPeriod() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            document.getElementById('periodSelect').value = `${year}-${month}`;
+        }
+
+        // Update timestamps
+        function updateTimestamps() {
+            const now = new Date().toLocaleDateString();
+            document.getElementById('createdDate').textContent = now;
+            document.getElementById('modifiedDate').textContent = now;
+        }
+
+        // Show/hide empty state
+        function showEmptyState() {
+            const hasItems = lineItemsBody.children.length > 0;
+            emptyState.style.display = hasItems ? 'none' : 'block';
+        }
+
+        // Load timesheet data
+        function loadTimesheetData() {
+            // Clear existing items
+            lineItemsBody.innerHTML = '';
+            
+            // Add items from mock data
+            mockTimesheetData.forEach(item => {
+                addLineItem(item.employee, item.hours, item.rate);
+            });
+            
+            showEmptyState();
+            updateSummary();
+        }
+
+        // Add line item
+        function addLineItem(employeeName = '', hours = 0, rate = 0) {
+            const row = document.createElement('tr');
+            row.className = 'line-item-row hover:bg-slate-50 transition-colors';
+            
+            const subtotal = hours * rate;
+            
+            row.innerHTML = `
+                <td class="px-6 py-4">
+                    <input type="text" class="employee-name w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" value="${employeeName}" placeholder="Employee name..." />
+                </td>
+                <td class="px-6 py-4">
+                    <input type="number" class="hours-worked w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" value="${hours}" min="0" step="0.25" placeholder="0.00" />
+                </td>
+                <td class="px-6 py-4">
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500">$</span>
+                        <input type="number" class="hourly-rate w-full pl-8 pr-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" value="${rate}" min="0" step="0.01" placeholder="0.00" />
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="subtotal font-medium text-slate-900">$${subtotal.toFixed(2)}</div>
+                </td>
+                <td class="px-6 py-4">
+                    <button class="delete-line-item p-1 text-slate-400 hover:text-error-600 transition-colors" title="Delete Line Item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                    </button>
+                </td>
+            `;
+            
+            lineItemsBody.appendChild(row);
+            
+            // Add event listeners
+            setupLineItemEventListeners(row);
+            showEmptyState();
+            updateSummary();
+        }
+
+        // Setup event listeners for line item row
+        function setupLineItemEventListeners(row) {
+            const deleteBtn = row.querySelector('.delete-line-item');
+            const hoursInput = row.querySelector('.hours-worked');
+            const rateInput = row.querySelector('.hourly-rate');
+            const employeeInput = row.querySelector('.employee-name');
+
+            deleteBtn.addEventListener('click', () => {
+                row.remove();
+                showEmptyState();
+                updateSummary();
+            });
+
+            [hoursInput, rateInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    updateLineItemSubtotal(row);
+                    updateSummary();
+                });
+            });
+
+            employeeInput.addEventListener('input', updateSummary);
+        }
+
+        // Update line item subtotal
+        function updateLineItemSubtotal(row) {
+            const hours = parseFloat(row.querySelector('.hours-worked').value) || 0;
+            const rate = parseFloat(row.querySelector('.hourly-rate').value) || 0;
+            const subtotal = hours * rate;
+            row.querySelector('.subtotal').textContent = `$${subtotal.toFixed(2)}`;
+        }
+
+        // Update invoice summary
+        function updateSummary() {
+            const rows = document.querySelectorAll('.line-item-row');
+            let subtotal = 0;
+            let totalHours = 0;
+            let employeeCount = 0;
+            let totalRates = 0;
+
+            rows.forEach(row => {
+                const hours = parseFloat(row.querySelector('.hours-worked').value) || 0;
+                const rate = parseFloat(row.querySelector('.hourly-rate').value) || 0;
+                const employeeName = row.querySelector('.employee-name').value.trim();
+                
+                subtotal += hours * rate;
+                totalHours += hours;
+                
+                if (employeeName) {
+                    employeeCount++;
+                    totalRates += rate;
+                }
+            });
+
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const total = subtotal + taxAmount;
+            const avgRate = employeeCount > 0 ? totalRates / employeeCount : 0;
+
+            // Update display
+            document.getElementById('subtotalAmount').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `$${taxAmount.toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('totalHours').textContent = totalHours.toFixed(2);
+            document.getElementById('employeeCount').textContent = employeeCount;
+            document.getElementById('avgRate').textContent = `$${avgRate.toFixed(2)}`;
+
+            // Update modified timestamp
+            document.getElementById('modifiedDate').textContent = new Date().toLocaleDateString();
+        }
+
+        // Validate invoice
+        function validateInvoice() {
+            const errors = [];
+            
+            if (!document.getElementById('vendorSelect').value) {
+                errors.push('Please select a vendor');
+            }
+            
+            if (!document.getElementById('periodSelect').value) {
+                errors.push('Please select a billing period');
+            }
+            
+            if (!document.getElementById('dueDate').value) {
+                errors.push('Please set a due date');
+            }
+            
+            if (lineItemsBody.children.length === 0) {
+                errors.push('Please add at least one line item');
+            }
+
+            // Validate line items
+            const rows = document.querySelectorAll('.line-item-row');
+            rows.forEach((row, index) => {
+                const employeeName = row.querySelector('.employee-name').value.trim();
+                const hours = parseFloat(row.querySelector('.hours-worked').value) || 0;
+                const rate = parseFloat(row.querySelector('.hourly-rate').value) || 0;
+                
+                if (!employeeName) {
+                    errors.push(`Line item ${index + 1}: Employee name is required`);
+                }
+                
+                if (hours <= 0) {
+                    errors.push(`Line item ${index + 1}: Hours worked must be greater than 0`);
+                }
+                
+                if (rate <= 0) {
+                    errors.push(`Line item ${index + 1}: Hourly rate must be greater than 0`);
+                }
+            });
+
+            return errors;
+        }
+
+        // Event listeners
+        addLineItemBtn.addEventListener('click', () => addLineItem());
+        loadTimesheetBtn.addEventListener('click', loadTimesheetData);
+        loadTimesheetEmptyBtn.addEventListener('click', loadTimesheetData);
+        regenerateNumberBtn.addEventListener('click', generateInvoiceNumber);
+
+        // Tax rate change
+        document.getElementById('taxRate').addEventListener('input', updateSummary);
+
+        // Generate invoice
+        generateInvoiceBtn.addEventListener('click', () => {
+            const errors = validateInvoice();
+            
+            if (errors.length > 0) {
+                alert('Please fix the following errors:\n\n' + errors.join('\n'));
+                return;
+            }
+
+            // Collect invoice data
+            const invoiceData = {
+                vendor: document.getElementById('vendorSelect').value,
+                period: document.getElementById('periodSelect').value,
+                invoiceNumber: document.getElementById('invoiceNumber').value,
+                dueDate: document.getElementById('dueDate').value,
+                notes: document.getElementById('invoiceNotes').value,
+                taxRate: parseFloat(document.getElementById('taxRate').value) || 0,
+                lineItems: []
+            };
+
+            document.querySelectorAll('.line-item-row').forEach(row => {
+                const employeeName = row.querySelector('.employee-name').value.trim();
+                const hours = parseFloat(row.querySelector('.hours-worked').value) || 0;
+                const rate = parseFloat(row.querySelector('.hourly-rate').value) || 0;
+                
+                invoiceData.lineItems.push({
+                    employeeName,
+                    hours,
+                    rate,
+                    subtotal: hours * rate
+                });
+            });
+
+            // Generate invoice (mock implementation)
+            console.log('Generating invoice:', invoiceData);
+            document.getElementById('invoiceStatus').textContent = 'Generated';
+            document.getElementById('invoiceStatus').className = 'badge badge-success';
+            alert('Invoice generated successfully!');
+        });
+
+        // Save draft
+        saveDraftBtn.addEventListener('click', () => {
+            const draftData = {
+                vendor: document.getElementById('vendorSelect').value,
+                period: document.getElementById('periodSelect').value,
+                invoiceNumber: document.getElementById('invoiceNumber').value,
+                dueDate: document.getElementById('dueDate').value,
+                notes: document.getElementById('invoiceNotes').value,
+                taxRate: parseFloat(document.getElementById('taxRate').value) || 0,
+                lineItems: []
+            };
+
+            document.querySelectorAll('.line-item-row').forEach(row => {
+                const employeeName = row.querySelector('.employee-name').value.trim();
+                const hours = parseFloat(row.querySelector('.hours-worked').value) || 0;
+                const rate = parseFloat(row.querySelector('.hourly-rate').value) || 0;
+                
+                draftData.lineItems.push({
+                    employeeName,
+                    hours,
+                    rate
+                });
+            });
+
+            // Save draft (mock implementation)
+            localStorage.setItem('invoiceDraft', JSON.stringify(draftData));
+            alert('Draft saved successfully!');
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check authentication
+            if (!localStorage.getItem('isLoggedIn')) {
+                window.location.href = 'login.html';
+            }
+
+            initializeInvoice();
+
+            // Try to load draft
+            const savedDraft = localStorage.getItem('invoiceDraft');
+            if (savedDraft) {
+                const draftData = JSON.parse(savedDraft);
+                
+                // Load basic data
+                document.getElementById('vendorSelect').value = draftData.vendor || '';
+                document.getElementById('periodSelect').value = draftData.period || '';
+                document.getElementById('dueDate').value = draftData.dueDate || '';
+                document.getElementById('invoiceNotes').value = draftData.notes || '';
+                document.getElementById('taxRate').value = draftData.taxRate || 8.25;
+                
+                // Load line items
+                if (draftData.lineItems && draftData.lineItems.length > 0) {
+                    lineItemsBody.innerHTML = '';
+                    draftData.lineItems.forEach(item => {
+                        addLineItem(item.employeeName, item.hours, item.rate);
+                    });
+                    showEmptyState();
+                    updateSummary();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

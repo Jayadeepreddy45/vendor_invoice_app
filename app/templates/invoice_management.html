@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Management - VendorInvoice Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="module"
+        src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fvendorinvo3864back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.5"></script>
+</head>
+
+<body class="min-h-screen bg-slate-50">
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+            <!-- Left Section: Logo + Menu Toggle -->
+            <div class="flex items-center space-x-4">
+                <!-- Mobile Menu Toggle -->
+                <button id="sidebarToggle"
+                    class="lg:hidden p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <!-- Company Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary-800 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <div class="hidden sm:block">
+                        <h1 class="text-lg font-bold text-slate-900">VendorInvoice Pro</h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Section: User Profile -->
+            <div class="flex items-center space-x-4">
+                <!-- Notifications -->
+                <button
+                    class="p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-5 5v-5zM10.07 2.82l3.12 3.12M7.05 5.84l3.12 3.12M4.03 8.86l3.12 3.12M1.01 11.88l3.12 3.12" />
+                    </svg>
+                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-error-500 rounded-full"></span>
+                </button>
+
+                <!-- User Profile Dropdown -->
+                <div class="relative">
+                    <button id="userMenuToggle"
+                        class="flex items-center space-x-3 p-2 rounded-md hover:bg-slate-100 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="User Avatar" class="w-8 h-8 rounded-full object-cover"
+                            onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="hidden sm:block text-left">
+                            <p class="text-sm font-medium text-slate-900">Admin</p>
+                            <p class="text-xs text-slate-600">Administrator</p>
+                        </div>
+                        <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="userMenu"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-elevated border border-slate-200 py-1 z-50">
+                        <a href="#"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Profile
+                            Settings</a>
+                        <a href="#"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Account</a>
+                        <div class="border-t border-slate-200 my-1"></div>
+                        <a href="/logout"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Sign
+                            Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar"
+            class="fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0 pt-16 lg:pt-0">
+            <div class="flex flex-col h-full">
+                <!-- Navigation Menu -->
+                <nav class="flex-1 px-4 py-6 space-y-2">
+                    <!-- Dashboard -->
+                    <a href="/dashboard"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 5a2 2 0 012-2h2a2 2 0 012 2v0H8v0z" />
+                        </svg>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                    </a>
+                    <a href="/timesheets/all"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                        </svg>
+                        <span>Timesheet Management</span>
+                    </a>
+
+                    <!-- Invoice Management - Active -->
+                    <a href="/invoice/invoices/manage"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-md text-primary-800 bg-primary-50 border-r-2 border-primary-800 font-medium">
+                        <svg class="w-5 h-5 text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>Invoice Management</span>
+                    </a>
+
+                    <!-- Vendor Management -->
+                    <a href="vendor_management.html"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span class="font-medium">Vendor Management</span>
+                    </a>
+
+                    <!-- Reports -->
+                    <a href="#"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span class="font-medium">Reports</span>
+                    </a>
+
+                    <!-- Settings -->
+                    <a href="#"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-md text-slate-700 hover:text-primary-800 hover:bg-primary-50 transition-colors group">
+                        <svg class="w-5 h-5 text-slate-500 group-hover:text-primary-800" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="font-medium">Settings</span>
+                    </a>
+                </nav>
+
+                <!-- Sidebar Footer -->
+                <div class="p-4 border-t border-slate-200">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-accent-600 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-900">Need Help?</p>
+                            <p class="text-xs text-slate-600">Contact Support</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay for Mobile -->
+        <div id="sidebarOverlay" class="hidden fixed inset-0 bg-slate-900 bg-opacity-50 z-30 lg:hidden"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-0">
+            <div class="p-4 sm:p-6 lg:p-8">
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900">Invoice Management</h1>
+                            <p class="text-slate-600 mt-1">Manage and track all your vendor invoices</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button class="btn btn-secondary flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Export to PDF</span>
+                            </button>
+                            <a href="invoice_form.html" class="btn btn-primary flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Create New Invoice</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="bg-white rounded-lg shadow-subtle border border-slate-200 p-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <!-- Search Input -->
+                        <div class="lg:col-span-2">
+                            <label for="searchInput" class="block text-sm font-medium text-slate-700 mb-2">Search
+                                Invoices</label>
+                            <div class="relative">
+                                <input type="text" id="searchInput"
+                                    placeholder="Search by vendor, invoice number, or amount..."
+                                    class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                                <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div>
+                            <label for="statusFilter"
+                                class="block text-sm font-medium text-slate-700 mb-2">Status</label>
+                            <select id="statusFilter"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                <option value>All Statuses</option>
+                                <option value="paid">Paid</option>
+                                <option value="pending">Pending</option>
+                                <option value="overdue">Overdue</option>
+                            </select>
+                        </div>
+
+                        <!-- Vendor Filter -->
+                        <div>
+                            <label for="vendorFilter"
+                                class="block text-sm font-medium text-slate-700 mb-2">Vendor</label>
+                            <select id="vendorFilter"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                <option value>All Vendors</option>
+                                <option value="acme-corp">Acme Corporation</option>
+                                <option value="tech-solutions">Tech Solutions Inc</option>
+                                <option value="global-supplies">Global Supplies Ltd</option>
+                                <option value="office-depot">Office Depot</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label for="dateFrom" class="block text-sm font-medium text-slate-700 mb-2">Due Date
+                                From</label>
+                            <input type="date" id="dateFrom"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                        </div>
+                        <div>
+                            <label for="dateTo" class="block text-sm font-medium text-slate-700 mb-2">Due Date
+                                To</label>
+                            <input type="date" id="dateTo"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <button id="applyFilters" class="btn btn-primary flex-1">Apply Filters</button>
+                            <button id="resetFilters" class="btn btn-secondary">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Active Filters -->
+                    <div id="activeFilters" class="flex flex-wrap gap-2">
+                        <!-- Filter chips will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Results Summary -->
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-4">
+                        <p class="text-sm text-slate-600">
+                            Showing <span id="resultCount" class="font-medium text-slate-900">1</span> of <span
+                                id="totalCount" class="font-medium text-slate-900">1</span> invoices
+                        </p>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" id="selectAll"
+                                class="w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" />
+                            <label for="selectAll" class="text-sm text-slate-600">Select All</label>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label for="pageSize" class="text-sm text-slate-600">Show:</label>
+                        <select id="pageSize"
+                            class="px-2 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                            <option value="10">10</option>
+                            <option value="25" selected>25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Invoice Table -->
+                <div class="bg-white rounded-lg shadow-subtle border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-6 py-3 text-left">
+                                        <input type="checkbox"
+                                            class="w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" />
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700"
+                                        onclick="sortTable('vendor')">
+                                        <div class="flex items-center space-x-1">
+                                            <span>Vendor</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                            </svg>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700"
+                                        onclick="sortTable('invoice')">
+                                        <div class="flex items-center space-x-1">
+                                            <span>Invoice #</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                            </svg>
+                                        </div>
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700"
+                                        onclick="sortTable('date')">
+                                        <div class="flex items-center space-x-1">
+                                            <span>Due Date</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                            </svg>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700"
+                                        onclick="sortTable('amount')">
+                                        <div class="flex items-center space-x-1">
+                                            <span>Amount</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                            </svg>
+                                        </div>
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoiceTableBody" class="bg-white divide-y divide-slate-200">
+                                <!-- Invoice Row 1 -->
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <input type="checkbox"
+                                            class="w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" />
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                                                <span class="text-primary-800 font-medium text-sm">J</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-slate-900">Jayadeep</div>
+                                                <div class="text-sm text-slate-500">contact@Jayadeep.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-mono text-slate-900">INV-2025-001</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="badge badge-success">Paid</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-slate-900">01/15/2025</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-slate-900">$2,450.00</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="p-1 text-slate-400 hover:text-primary-600 transition-colors"
+                                                title="View Invoice">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                            </button>
+                                            <a href="invoice_form.html"
+                                                class="p-1 text-slate-400 hover:text-primary-600 transition-colors"
+                                                title="Edit Invoice">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </a>
+                                            <button class="p-1 text-slate-400 hover:text-error-600 transition-colors"
+                                                title="Delete Invoice">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+
+                                </tr>
+
+                                <!-- Additional rows would continue here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex items-center justify-between mt-6">
+                    <div class="flex items-center space-x-2">
+                        <button
+                            class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            Previous
+                        </button>
+                        <div class="flex items-center space-x-1">
+                            <button class="px-3 py-2 text-sm bg-primary-800 text-white rounded-md">1</button>
+                            <!-- <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md">2</button>
+                            <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md">3</button>
+                            <span class="px-2 text-slate-500">...</span>
+                            <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md">7</button> -->
+                        </div>
+                        <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900">
+                            Next
+                        </button>
+                    </div>
+                    <div class="text-sm text-slate-600">
+                        Page 1 of 1
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile sidebar toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // User menu toggle
+        const userMenuToggle = document.getElementById('userMenuToggle');
+        const userMenu = document.getElementById('userMenu');
+
+        userMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', () => {
+            userMenu.classList.add('hidden');
+        });
+
+        // Filter functionality
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const vendorFilter = document.getElementById('vendorFilter');
+        const dateFrom = document.getElementById('dateFrom');
+        const dateTo = document.getElementById('dateTo');
+        const applyFilters = document.getElementById('applyFilters');
+        const resetFilters = document.getElementById('resetFilters');
+        const activeFilters = document.getElementById('activeFilters');
+
+        // Apply filters
+        applyFilters.addEventListener('click', () => {
+            updateActiveFilters();
+            filterInvoices();
+        });
+
+        // Reset filters
+        resetFilters.addEventListener('click', () => {
+            searchInput.value = '';
+            statusFilter.value = '';
+            vendorFilter.value = '';
+            dateFrom.value = '';
+            dateTo.value = '';
+            activeFilters.innerHTML = '';
+            filterInvoices();
+        });
+
+        // Update active filters display
+        function updateActiveFilters() {
+            activeFilters.innerHTML = '';
+
+            if (searchInput.value) {
+                addFilterChip('Search', searchInput.value);
+            }
+            if (statusFilter.value) {
+                addFilterChip('Status', statusFilter.options[statusFilter.selectedIndex].text);
+            }
+            if (vendorFilter.value) {
+                addFilterChip('Vendor', vendorFilter.options[vendorFilter.selectedIndex].text);
+            }
+            if (dateFrom.value) {
+                addFilterChip('From Date', dateFrom.value);
+            }
+            if (dateTo.value) {
+                addFilterChip('To Date', dateTo.value);
+            }
+        }
+
+        // Add filter chip
+        function addFilterChip(label, value) {
+            const chip = document.createElement('div');
+            chip.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800';
+            chip.innerHTML = `
+                <span>${label}: ${value}</span>
+                <button class="ml-2 text-primary-600 hover:text-primary-800" onclick="removeFilter('${label}')">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            `;
+            activeFilters.appendChild(chip);
+        }
+
+        // Remove filter
+        function removeFilter(label) {
+            switch (label) {
+                case 'Search':
+                    searchInput.value = '';
+                    break;
+                case 'Status':
+                    statusFilter.value = '';
+                    break;
+                case 'Vendor':
+                    vendorFilter.value = '';
+                    break;
+                case 'From Date':
+                    dateFrom.value = '';
+                    break;
+                case 'To Date':
+                    dateTo.value = '';
+                    break;
+            }
+            updateActiveFilters();
+            filterInvoices();
+        }
+
+        // Filter invoices (mock implementation)
+        function filterInvoices() {
+            // This would typically make an API call to filter invoices
+            console.log('Filtering invoices...');
+            // Update result count
+            document.getElementById('resultCount').textContent = Math.floor(Math.random() * 50) + 10;
+        }
+
+        // Table sorting
+        let sortDirection = {};
+
+        function sortTable(column) {
+            const direction = sortDirection[column] === 'asc' ? 'desc' : 'asc';
+            sortDirection[column] = direction;
+
+            // This would typically sort the actual data
+            console.log(`Sorting by ${column} in ${direction} order`);
+
+            // Update sort indicators
+            updateSortIndicators(column, direction);
+        }
+
+        function updateSortIndicators(activeColumn, direction) {
+            // Reset all sort indicators
+            document.querySelectorAll('th svg').forEach(svg => {
+                svg.className = 'w-4 h-4';
+            });
+
+            // Update active column indicator
+            const activeHeader = document.querySelector(`th[onclick="sortTable('${activeColumn}')"] svg`);
+            if (activeHeader) {
+                activeHeader.className = direction === 'asc' ? 'w-4 h-4 text-primary-600' : 'w-4 h-4 text-primary-600 transform rotate-180';
+            }
+        }
+
+        // Select all functionality
+        const selectAll = document.getElementById('selectAll');
+        const rowCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+        selectAll.addEventListener('change', () => {
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+        });
+
+        // Page size change
+        document.getElementById('pageSize').addEventListener('change', (e) => {
+            console.log(`Changing page size to ${e.target.value}`);
+            // This would typically reload the table with new page size
+        });
+
+        // Real-time search
+        searchInput.addEventListener('input', debounce(() => {
+            filterInvoices();
+        }, 300));
+
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check authentication
+            if (!localStorage.getItem('isLoggedIn')) {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

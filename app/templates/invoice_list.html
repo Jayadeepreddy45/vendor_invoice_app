@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice List - VendorInvoice Pro</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fvendorinvo3864back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.5"></script>
+</head>
+<body class="min-h-screen bg-slate-50">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white border-b border-slate-200 z-50">
+        <div class="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            <!-- Logo (Mobile) -->
+            <div class="flex items-center space-x-3 lg:hidden">
+                <div class="w-8 h-8 bg-primary-800 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <span class="text-lg font-bold text-slate-900">VendorInvoice Pro</span>
+            </div>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden lg:flex flex-1 max-w-md mx-8">
+                <div class="relative w-full">
+                    <input type="text" id="globalSearch" placeholder="Search invoices, vendors..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- User Profile & Actions -->
+            <div class="flex items-center space-x-4">
+                <!-- Notifications -->
+                <button class="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.07 2.82l3.93 3.93-3.93 3.93-3.93-3.93 3.93-3.93z"/>
+                    </svg>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-error-500 rounded-full"></span>
+                </button>
+
+                <!-- User Profile Dropdown -->
+                <div class="relative">
+                    <button id="userMenuBtn" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-slate-100 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="User Avatar" class="w-8 h-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="hidden sm:block text-left">
+                            <p class="text-sm font-medium text-slate-900">John Smith</p>
+                            <p class="text-xs text-slate-600">Administrator</p>
+                        </div>
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-elevated border border-slate-200 py-1 z-50">
+                        <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Profile Settings</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Account Preferences</a>
+                        <div class="border-t border-slate-200 my-1"></div>
+                        <a href="login.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
+        <!-- Logo (Desktop) -->
+        <div class="hidden lg:flex items-center space-x-3 p-6 border-b border-slate-200">
+            <div class="w-10 h-10 bg-primary-800 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold text-slate-900">VendorInvoice Pro</h1>
+                <p class="text-xs text-slate-600">Invoice Management</p>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="p-4 space-y-2">
+            <!-- Dashboard -->
+            <a href="dashboard_overview.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"/>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Invoice Management -->
+            <a href="invoice_management.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Invoice Management</span>
+            </a>
+
+            <!-- Invoice List - Active -->
+            <a href="invoice_list.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-primary-50 text-primary-800 font-medium transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                </svg>
+                <span>Invoice List</span>
+            </a>
+
+            <!-- Vendor Management -->
+            <a href="vendor_management.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span>Vendor Management</span>
+            </a>
+
+            <!-- Divider -->
+            <div class="border-t border-slate-200 my-4"></div>
+
+            <!-- Quick Actions -->
+            <div class="space-y-2">
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider px-3">Quick Actions</p>
+                <a href="invoice_form.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    <span>Create Invoice</span>
+                </a>
+                <a href="vendor_form.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                    </svg>
+                    <span>Add Vendor</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-30 lg:hidden hidden"></div>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 pt-16 min-h-screen">
+        <div class="p-4 sm:p-6 lg:p-8">
+            <!-- Page Header -->
+            <div class="mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Invoice List</h1>
+                        <p class="text-slate-600">Comprehensive invoice tracking and management</p>
+                    </div>
+                    <div class="flex items-center space-x-3 mt-4 sm:mt-0">
+                        <button id="bulkActionsBtn" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50" disabled>
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Bulk Actions
+                        </button>
+                        <button class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                            Export
+                        </button>
+                        <a href="invoice_form.html" class="px-4 py-2 bg-primary-800 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Create Invoice
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Filter Panel -->
+            <div class="bg-white rounded-lg shadow-subtle border border-slate-200 mb-6">
+                <!-- Filter Header -->
+                <div class="flex items-center justify-between p-4 border-b border-slate-200">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                        </svg>
+                        <h2 class="text-lg font-semibold text-slate-900">Filters</h2>
+                        <span id="filterCount" class="hidden px-2 py-1 bg-primary-100 text-primary-800 text-xs font-medium rounded-full">3 active</span>
+                    </div>
+                    <button id="toggleFilters" class="text-slate-500 hover:text-slate-700 transition-colors lg:hidden">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Filter Content -->
+                <div id="filterContent" class="p-6">
+                    <!-- Primary Filters Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <!-- Search All Fields -->
+                        <div class="lg:col-span-2">
+                            <label for="searchFilter" class="block text-sm font-medium text-slate-700 mb-2">Search All Fields</label>
+                            <div class="relative">
+                                <input type="text" id="searchFilter" placeholder="Invoice ID, vendor, amount..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div>
+                            <label for="statusFilter" class="block text-sm font-medium text-slate-700 mb-2">Status</label>
+                            <select id="statusFilter" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                <option value>All Statuses</option>
+                                <option value="draft">Draft</option>
+                                <option value="sent">Sent</option>
+                                <option value="paid">Paid</option>
+                                <option value="overdue">Overdue</option>
+                            </select>
+                        </div>
+
+                        <!-- Vendor Filter -->
+                        <div>
+                            <label for="vendorFilter" class="block text-sm font-medium text-slate-700 mb-2">Vendor</label>
+                            <select id="vendorFilter" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                                <option value>All Vendors</option>
+                                <option value="acme-corp">Acme Corporation</option>
+                                <option value="techstart">TechStart Solutions</option>
+                                <option value="global-industries">Global Industries</option>
+                                <option value="modern-systems">Modern Systems</option>
+                                <option value="digital-solutions">Digital Solutions</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Filters -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <!-- Due Date Range -->
+                        <div>
+                            <label for="dueDateFrom" class="block text-sm font-medium text-slate-700 mb-2">Due Date From</label>
+                            <input type="date" id="dueDateFrom" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                        </div>
+                        <div>
+                            <label for="dueDateTo" class="block text-sm font-medium text-slate-700 mb-2">Due Date To</label>
+                            <input type="date" id="dueDateTo" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                        </div>
+
+                        <!-- Creation Date Range -->
+                        <div>
+                            <label for="createdFrom" class="block text-sm font-medium text-slate-700 mb-2">Created From</label>
+                            <input type="date" id="createdFrom" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                        </div>
+                        <div>
+                            <label for="createdTo" class="block text-sm font-medium text-slate-700 mb-2">Created To</label>
+                            <input type="date" id="createdTo" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors" />
+                        </div>
+                    </div>
+
+                    <!-- Filter Actions -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <button id="applyFilters" class="px-4 py-2 bg-primary-800 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                                Apply Filters
+                            </button>
+                            <button id="resetFilters" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+                                Reset All
+                            </button>
+                        </div>
+                        <div class="text-sm text-slate-600">
+                            <span id="resultsCount">247</span> invoices found
+                        </div>
+                    </div>
+
+                    <!-- Active Filter Chips -->
+                    <div id="activeFilterChips" class="flex flex-wrap gap-2 mt-4">
+                        <!-- Filter chips will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Table -->
+            <div class="bg-white rounded-lg shadow-subtle border border-slate-200 overflow-hidden">
+                <!-- Table Header Actions -->
+                <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="selectAllInvoices" class="w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" />
+                                <label for="selectAllInvoices" class="text-sm text-slate-600">Select All</label>
+                            </div>
+                            <div class="text-sm text-slate-600">
+                                <span id="selectedCount">0</span> selected
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <select id="pageSize" class="px-3 py-1 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                <option value="25">25 per page</option>
+                                <option value="50">50 per page</option>
+                                <option value="100">100 per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-slate-50 border-b border-slate-200">
+                            <tr>
+                                <th class="px-6 py-3 text-left w-12">
+                                    <span class="sr-only">Select</span>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700" data-sort="invoice-id">
+                                    <div class="flex items-center space-x-1">
+                                        <span>Invoice ID</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700" data-sort="vendor">
+                                    <div class="flex items-center space-x-1">
+                                        <span>Vendor</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Month</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700" data-sort="total">
+                                    <div class="flex items-center space-x-1">
+                                        <span>Total</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700" data-sort="due-date">
+                                    <div class="flex items-center space-x-1">
+                                        <span>Due Date</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-slate-200" id="invoiceTableBody">
+                            <!-- Invoice Row 1 - Paid -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox" class="invoice-checkbox w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" data-invoice-id="INV-2025-001" />
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button class="text-sm font-mono text-primary-600 hover:text-primary-800 font-medium transition-colors">INV-2025-001</button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span class="text-sm font-medium text-primary-800">AC</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900">Acme Corporation</div>
+                                            <div class="text-sm text-slate-500">acme@company.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    January 2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                                    $2,450.00
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800">
+                                        Paid
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    01/15/2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="View Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-slate-600 hover:text-slate-800 transition-colors" title="Edit Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Invoice Row 2 - Sent -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox" class="invoice-checkbox w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" data-invoice-id="INV-2025-002" />
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button class="text-sm font-mono text-primary-600 hover:text-primary-800 font-medium transition-colors">INV-2025-002</button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-warning-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span class="text-sm font-medium text-warning-800">TS</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900">TechStart Solutions</div>
+                                            <div class="text-sm text-slate-500">billing@techstart.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    January 2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                                    $1,875.50
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                                        Sent
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    01/20/2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="View Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-slate-600 hover:text-slate-800 transition-colors" title="Edit Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="Send Email">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-accent-600 hover:text-accent-800 transition-colors" title="Mark as Paid">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Invoice Row 3 - Overdue -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox" class="invoice-checkbox w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" data-invoice-id="INV-2025-003" />
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button class="text-sm font-mono text-primary-600 hover:text-primary-800 font-medium transition-colors">INV-2025-003</button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-error-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span class="text-sm font-medium text-error-800">GI</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900">Global Industries</div>
+                                            <div class="text-sm text-slate-500">accounts@global.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    December 2024
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                                    $3,200.00
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-error-100 text-error-800">
+                                        Overdue
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    12/30/2024
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="View Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-slate-600 hover:text-slate-800 transition-colors" title="Edit Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="Send Email">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-accent-600 hover:text-accent-800 transition-colors" title="Mark as Paid">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Invoice Row 4 - Draft -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox" class="invoice-checkbox w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" data-invoice-id="INV-2025-004" />
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button class="text-sm font-mono text-primary-600 hover:text-primary-800 font-medium transition-colors">INV-2025-004</button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span class="text-sm font-medium text-secondary-800">MS</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900">Modern Systems</div>
+                                            <div class="text-sm text-slate-500">finance@modern.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    January 2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                                    $1,650.75
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                                        Draft
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    01/25/2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="View Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-slate-600 hover:text-slate-800 transition-colors" title="Edit Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="Send Email">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Invoice Row 5 -->
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox" class="invoice-checkbox w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" data-invoice-id="INV-2025-005" />
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button class="text-sm font-mono text-primary-600 hover:text-primary-800 font-medium transition-colors">INV-2025-005</button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center mr-3">
+                                            <span class="text-sm font-medium text-accent-800">DS</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900">Digital Solutions</div>
+                                            <div class="text-sm text-slate-500">billing@digital.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    February 2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                                    $2,100.00
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                                        Sent
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                                    02/01/2025
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="View Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-slate-600 hover:text-slate-800 transition-colors" title="Edit Invoice">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-primary-600 hover:text-primary-800 transition-colors" title="Send Email">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-accent-600 hover:text-accent-800 transition-colors" title="Mark as Paid">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table Footer with Pagination -->
+                <div class="px-6 py-4 border-t border-slate-200 bg-slate-50">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                        <div class="text-sm text-slate-600">
+                            Showing <span class="font-medium text-slate-900">1-25</span> of <span class="font-medium text-slate-900">247</span> invoices
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 disabled:opacity-50 disabled:cursor-not-allowed border border-slate-300 rounded-lg" disabled>
+                                Previous
+                            </button>
+                            <div class="flex items-center space-x-1">
+                                <button class="px-3 py-2 text-sm bg-primary-800 text-white rounded-lg">1</button>
+                                <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">2</button>
+                                <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">3</button>
+                                <span class="px-2 text-slate-500">...</span>
+                                <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">10</button>
+                            </div>
+                            <button class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 border border-slate-300 rounded-lg">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Invoice Cards (Hidden on desktop) -->
+    <div class="lg:hidden px-4 pb-6" id="mobileCards" style="display: none;">
+        <!-- Mobile cards would be shown instead of table on smaller screens -->
+        <div class="space-y-4">
+            <!-- Mobile Card 1 -->
+            <div class="bg-white rounded-lg shadow-subtle border border-slate-200 p-4">
+                <div class="flex items-start justify-between mb-3">
+                    <div>
+                        <button class="text-sm font-mono text-primary-600 hover:text-primary-800 font-medium">INV-2025-001</button>
+                        <p class="text-sm text-slate-600">Acme Corporation</p>
+                    </div>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800">
+                        Paid
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="text-slate-500">Amount</p>
+                        <p class="font-medium text-slate-900">$2,450.00</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-500">Due Date</p>
+                        <p class="font-medium text-slate-900">01/15/2025</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end space-x-2 mt-4 pt-3 border-t border-slate-200">
+                    <button class="text-primary-600 hover:text-primary-800 transition-colors">View</button>
+                    <button class="text-slate-600 hover:text-slate-800 transition-colors">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // User dropdown toggle
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+
+        userMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            userDropdown.classList.add('hidden');
+        });
+
+        userDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Filter functionality
+        const searchFilter = document.getElementById('searchFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const vendorFilter = document.getElementById('vendorFilter');
+        const dueDateFrom = document.getElementById('dueDateFrom');
+        const dueDateTo = document.getElementById('dueDateTo');
+        const createdFrom = document.getElementById('createdFrom');
+        const createdTo = document.getElementById('createdTo');
+        const applyFilters = document.getElementById('applyFilters');
+        const resetFilters = document.getElementById('resetFilters');
+        const activeFilterChips = document.getElementById('activeFilterChips');
+        const filterCount = document.getElementById('filterCount');
+
+        // Apply filters
+        applyFilters.addEventListener('click', function() {
+            updateActiveFilters();
+            applyInvoiceFilters();
+        });
+
+        // Reset filters
+        resetFilters.addEventListener('click', function() {
+            // Clear all filter inputs
+            searchFilter.value = '';
+            statusFilter.value = '';
+            vendorFilter.value = '';
+            dueDateFrom.value = '';
+            dueDateTo.value = '';
+            createdFrom.value = '';
+            createdTo.value = '';
+            
+            // Clear active filter chips
+            activeFilterChips.innerHTML = '';
+            filterCount.classList.add('hidden');
+            
+            // Apply cleared filters
+            applyInvoiceFilters();
+        });
+
+        // Update active filter chips
+        function updateActiveFilters() {
+            activeFilterChips.innerHTML = '';
+            let filterCount = 0;
+
+            const filters = [
+                { label: 'Search', value: searchFilter.value, id: 'searchFilter' },
+                { label: 'Status', value: statusFilter.value ? statusFilter.options[statusFilter.selectedIndex].text : '', id: 'statusFilter' },
+                { label: 'Vendor', value: vendorFilter.value ? vendorFilter.options[vendorFilter.selectedIndex].text : '', id: 'vendorFilter' },
+                { label: 'Due From', value: dueDateFrom.value, id: 'dueDateFrom' },
+                { label: 'Due To', value: dueDateTo.value, id: 'dueDateTo' },
+                { label: 'Created From', value: createdFrom.value, id: 'createdFrom' },
+                { label: 'Created To', value: createdTo.value, id: 'createdTo' }
+            ];
+
+            filters.forEach(filter => {
+                if (filter.value) {
+                    addFilterChip(filter.label, filter.value, filter.id);
+                    filterCount++;
+                }
+            });
+
+            const filterCountElement = document.getElementById('filterCount');
+            if (filterCount > 0) {
+                filterCountElement.textContent = `${filterCount} active`;
+                filterCountElement.classList.remove('hidden');
+            } else {
+                filterCountElement.classList.add('hidden');
+            }
+        }
+
+        // Add filter chip
+        function addFilterChip(label, value, filterId) {
+            const chip = document.createElement('div');
+            chip.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800';
+            chip.innerHTML = `
+                <span>${label}: ${value}</span>
+                <button class="ml-2 text-primary-600 hover:text-primary-800" onclick="removeFilterChip('${filterId}')">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            `;
+            activeFilterChips.appendChild(chip);
+        }
+
+        // Remove filter chip
+        function removeFilterChip(filterId) {
+            document.getElementById(filterId).value = '';
+            updateActiveFilters();
+            applyInvoiceFilters();
+        }
+
+        // Apply invoice filters (mock implementation)
+        function applyInvoiceFilters() {
+            // In a real application, this would make an API call
+            console.log('Applying filters:', {
+                search: searchFilter.value,
+                status: statusFilter.value,
+                vendor: vendorFilter.value,
+                dueDateFrom: dueDateFrom.value,
+                dueDateTo: dueDateTo.value,
+                createdFrom: createdFrom.value,
+                createdTo: createdTo.value
+            });
+
+            // Update results count
+            const randomCount = Math.floor(Math.random() * 200) + 50;
+            document.getElementById('resultsCount').textContent = randomCount;
+        }
+
+        // Select all functionality
+        const selectAllInvoices = document.getElementById('selectAllInvoices');
+        const invoiceCheckboxes = document.querySelectorAll('.invoice-checkbox');
+        const selectedCount = document.getElementById('selectedCount');
+        const bulkActionsBtn = document.getElementById('bulkActionsBtn');
+
+        selectAllInvoices.addEventListener('change', function() {
+            invoiceCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllInvoices.checked;
+            });
+            updateSelectedCount();
+        });
+
+        invoiceCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+
+        function updateSelectedCount() {
+            const selected = document.querySelectorAll('.invoice-checkbox:checked').length;
+            selectedCount.textContent = selected;
+            bulkActionsBtn.disabled = selected === 0;
+            
+            if (selected === invoiceCheckboxes.length) {
+                selectAllInvoices.checked = true;
+                selectAllInvoices.indeterminate = false;
+            } else if (selected > 0) {
+                selectAllInvoices.checked = false;
+                selectAllInvoices.indeterminate = true;
+            } else {
+                selectAllInvoices.checked = false;
+                selectAllInvoices.indeterminate = false;
+            }
+        }
+
+        // Table sorting
+        let currentSort = { column: null, direction: 'asc' };
+
+        document.querySelectorAll('[data-sort]').forEach(header => {
+            header.addEventListener('click', function() {
+                const column = this.getAttribute('data-sort');
+                const direction = currentSort.column === column && currentSort.direction === 'asc' ? 'desc' : 'asc';
+                
+                // Update sort indicators
+                document.querySelectorAll('[data-sort] svg').forEach(svg => {
+                    svg.className = 'w-4 h-4';
+                });
+                
+                const svg = this.querySelector('svg');
+                svg.className = direction === 'asc' ? 'w-4 h-4 text-primary-600' : 'w-4 h-4 text-primary-600 transform rotate-180';
+                
+                currentSort = { column, direction };
+                
+                // In a real application, this would sort the data
+                console.log(`Sorting by ${column} in ${direction} order`);
+            });
+        });
+
+        // Global search
+        const globalSearch = document.getElementById('globalSearch');
+        globalSearch.addEventListener('input', debounce(function() {
+            searchFilter.value = this.value;
+            applyInvoiceFilters();
+        }, 300));
+
+        // Real-time search
+        searchFilter.addEventListener('input', debounce(function() {
+            applyInvoiceFilters();
+        }, 300));
+
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Page size change
+        document.getElementById('pageSize').addEventListener('change', function(e) {
+            console.log(`Changing page size to ${e.target.value}`);
+            // In a real application, this would reload the table
+        });
+
+        // Mobile filter toggle
+        const toggleFilters = document.getElementById('toggleFilters');
+        const filterContent = document.getElementById('filterContent');
+
+        if (toggleFilters) {
+            toggleFilters.addEventListener('click', function() {
+                filterContent.classList.toggle('hidden');
+                const svg = this.querySelector('svg');
+                svg.classList.toggle('rotate-180');
+            });
+        }
+
+        // Responsive table handling
+        function handleResponsiveTable() {
+            const table = document.querySelector('.overflow-x-auto');
+            const mobileCards = document.getElementById('mobileCards');
+            
+            if (window.innerWidth < 1024) {
+                // Show mobile cards on tablet/mobile
+                table.style.display = 'none';
+                mobileCards.style.display = 'block';
+            } else {
+                // Show table on desktop
+                table.style.display = 'block';
+                mobileCards.style.display = 'none';
+            }
+        }
+
+        // Check authentication status
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+            }
+            
+            // Initialize responsive handling
+            handleResponsiveTable();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', handleResponsiveTable);
+
+        // Invoice actions
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('[title="View Invoice"]')) {
+                console.log('View invoice clicked');
+                // In a real app, would open invoice details modal or page
+            }
+            
+            if (e.target.closest('[title="Edit Invoice"]')) {
+                console.log('Edit invoice clicked');
+                // In a real app, would navigate to edit page
+            }
+            
+            if (e.target.closest('[title="Send Email"]')) {
+                console.log('Send email clicked');
+                // In a real app, would open email composition modal
+            }
+            
+            if (e.target.closest('[title="Mark as Paid"]')) {
+                console.log('Mark as paid clicked');
+                // In a real app, would update invoice status
+            }
+        });
+    </script>
+</body>
+</html>
