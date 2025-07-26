@@ -2,33 +2,36 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from dotenv import load_dotenv
 from flask_migrate import Migrate
+from dotenv import load_dotenv
 
-# Load environment variables from .env
+# Load environment variables
 load_dotenv()
 
+# Initialize extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = 'auth.login'  # Redirect to this when not logged in
+login_manager.login_view = 'auth.login'
+
+# Flask-Migrate will be initialized inside the app factory
+migrate = Migrate()
 
 def create_app():
-    # ✅ Explicitly set template and static folder (helps avoid confusion)
     app = Flask(__name__,
                 template_folder='templates',
                 static_folder='static')
 
-    # ✅ Config values from .env
+    # Config from .env
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    # Init extensions
     db.init_app(app)
     login_manager.init_app(app)
-    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
 
-
-    # ✅ Import and register after app is created
+    # Register blueprints
     from . import models
     from .models import User
     from .routes import auth, dashboard, invoices, vendors, timesheets
@@ -44,3 +47,6 @@ def create_app():
     app.register_blueprint(timesheets.bp)
 
     return app
+
+# ✅ Create the app object so it can be used in seed.py and alembic
+app = create_app()
