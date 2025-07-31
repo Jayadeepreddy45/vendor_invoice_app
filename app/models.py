@@ -45,22 +45,6 @@ class Vendor(db.Model):
     invoices = db.relationship('Invoice', backref='vendor', lazy=True)
     employee_links = db.relationship('EmployeeVendor', backref='vendor', lazy=True)
 
-# # 👨‍🏭 Employee model
-# class Employee(db.Model):
-#     __tablename__ = 'employee'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(100), nullable=False)
-#     email = db.Column(db.String(120), nullable=False)
-    
-#     # Optional connection to User
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-#     user = db.relationship('User', backref='linked_employee', lazy=True)
-
-#     invoice_items = db.relationship('InvoiceItem', backref='employee', lazy=True)
-#     vendor_links = db.relationship('EmployeeVendor', backref='employee', lazy=True)
-
-# 🔗 Employee-Vendor junction table
 class EmployeeVendor(db.Model):
     __tablename__ = 'employee_vendor'
 
