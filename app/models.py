@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class User(UserMixin, db.Model):
     ROLE_EMPLOYEE = 1
     ROLE_ADMIN = 2
+    # ROLE_VENDOR = 3
 
     __tablename__ = 'users'
 
