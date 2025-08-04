@@ -8,7 +8,9 @@ class User(UserMixin, db.Model):
     ROLE_ADMIN = 2
     ROLE_VENDOR = 3
 
+
     __tablename__ = 'users'
+
 
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(150), nullable=False)
@@ -18,7 +20,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.Integer, default=ROLE_EMPLOYEE)
 
-    # 👇 New Fields for employee info
+
     hourly_rate = db.Column(db.Float, nullable=True)
 
     # 👇 Relationships
